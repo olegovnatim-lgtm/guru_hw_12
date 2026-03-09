@@ -2,8 +2,8 @@ import pytest
 from selene import browser
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from utils import attach
 
-# from utils import attach
 
 
 @pytest.fixture(scope='function', autouse=True)
@@ -26,9 +26,9 @@ def setup_browser():
     browser.config.driver = driver
 
     yield  browser
-    # attach.add_screenshot(driver)
-    # attach.add_page_source(driver)
-    # attach.add_console_logs(driver)
-    # attach.add_video(driver)
+    attach.add_screenshot(driver)
+    attach.add_page_source(driver)
+    attach.add_console_logs(driver)
+    attach.add_video(driver)
 
     driver.quit()
