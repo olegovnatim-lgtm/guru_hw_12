@@ -1,14 +1,14 @@
 import pytest
+import attach
 from selene import browser
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from utils import attach
-
 
 
 @pytest.fixture(scope='function', autouse=True)
 def setup_browser():
     options = Options()
+
     selenoid_capabilities = {
         "browserName": "chrome",
         "browserVersion": '128.0',
