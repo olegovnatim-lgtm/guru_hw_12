@@ -16,6 +16,18 @@ class RegistrationPage:
         )
         browser.all('[id^=google_ads][id$=container__]').perform(command.js.remove)
 
+    @allure.step("Заполнить поле 'First Name'")
+    def fill_first_name(self, first_name):
+        browser.element('#firstName').type(first_name)
+
+    @allure.step("Заполнить поле 'Last Name'")
+    def fill_last_name(self, last_name):
+        browser.element('#lastName').type(last_name)
+
+    @allure.step("Заполнить поле 'Email'")
+    def fill_email(self, email):
+        browser.element('#userEmail').type(email)
+
     @allure.step("Выбрать поле 'Date of Birth'")
     def fill_date_of_birth(self, year, month, day):
         browser.element('#dateOfBirthInput').click()
@@ -34,6 +46,14 @@ class RegistrationPage:
         else:
             browser.element('[for="gender-radio-3"]').click()
 
+    @allure.step("Заполнить поле 'Mobile'")
+    def fill_mobile(self, mobile):
+        browser.element('#userNumber').type(mobile)
+
+    @allure.step("Заполнить поле 'Subjects'")
+    def fill_subject(self, subject):
+        browser.element('#subjectsInput').type(subject).press_enter()
+
     @allure.step("Заполнить чекбокс 'Hobbies'")
     def fill_hobbies(self, hobbies):
         if hobbies == "Sports":
@@ -42,6 +62,15 @@ class RegistrationPage:
             browser.element('[for="hobbies-checkbox-2"]').click()
         elif hobbies == "Music":
             browser.element('[for="hobbies-checkbox-3"]').click()
+
+    @allure.step("Прикрепить фотографию")
+    def upload_picture(self, picture):
+        browser.element('#uploadPicture').set_value(utils.path(picture))
+
+    @allure.step("Заполнить поле 'Current Address'")
+    def fill_address(self, address):
+        browser.element('#currentAddress').type(address)
+
 
     @allure.step("Заполнить поле 'State'")
     def fill_state(self, name):
@@ -62,20 +91,21 @@ class RegistrationPage:
     def click_submit(self):
         browser.element('#submit').click()
 
+    @allure.step("Заполнить форму регистрации")
     def register(self, user: User):
-        browser.element('#firstName').type(user.first_name)
-        browser.element('#lastName').type(user.last_name)
-        browser.element('#userEmail').type(user.email)
+        self.fill_first_name(user.first_name)
+        self.fill_last_name(user.last_name)
+        self.fill_email(user.email)
         self.fill_gender(user.gender)
-        browser.element('#userNumber').type(user.mobile)
+        self.fill_mobile(user.mobile)
         self.fill_date_of_birth(user.year_of_birth, user.month_of_birth, user.day_of_birth)
-        browser.element('#subjectsInput').type(user.subject).press_enter()
+        self.fill_subject(user.subject)
         self.fill_hobbies(user.hobbies)
-        browser.element('#uploadPicture').set_value(utils.path(user.picture))
-        browser.element('#currentAddress').type(user.address)
+        self.upload_picture(user.picture)
+        self.fill_address(user.address)
         self.fill_state(user.state)
         self.fill_city(user.city)
-        browser.element('#submit').click()
+        self.click_submit()
 
     @allure.step("Сверить ранее заполненные значения")
     def should_have_registered(self, user: User):
