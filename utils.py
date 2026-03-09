@@ -9,5 +9,5 @@ def path(file_name):
 
 def format_date(year: str, month: str, day: str) -> str:
     date_obj = datetime(int(year), int(month), int(day))
-    return date_obj.strftime("%d %B,%Y").lstrip('0')  # убираем ведущий ноль у дня
+    return date_obj.strftime("%d %B,%Y").lstrip('0')
 
