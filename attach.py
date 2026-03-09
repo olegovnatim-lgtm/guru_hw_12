@@ -6,11 +6,9 @@ def add_screenshot(driver):
     png = driver.get_screenshot_as_png()
     allure.attach(body=png, name='screenshot', attachment_type=AttachmentType.PNG, extension='.png')
 
-
 def add_console_logs(driver):
     log = "".join(f'{text}\n' for text in driver.execute("getLog", {'type': 'browser'})['value'])
     allure.attach(log, 'browser_logs', AttachmentType.TEXT, '.log')
-
 
 def add_page_source(driver):
     html = driver.page_source
