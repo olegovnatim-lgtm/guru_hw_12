@@ -1,3 +1,4 @@
+import allure
 from pygments.lexers import resource
 from selene import have, command
 from selene.support.shared import browser
@@ -7,6 +8,7 @@ from data.users import User
 
 class RegistrationPage:
 
+    @allure.step("Открыть форму регистрации")
     def open(self):
         browser.open('https://demoqa.com/automation-practice-form')
         browser.all('[id^=google_ads][id$=container__]').with_(timeout=10).wait_until(
@@ -14,6 +16,7 @@ class RegistrationPage:
         )
         browser.all('[id^=google_ads][id$=container__]').perform(command.js.remove)
 
+    @allure.step("Выбрать поле 'Date of Birth'")
     def fill_date_of_birth(self, year, month, day):
         browser.element('#dateOfBirthInput').click()
         browser.element('.react-datepicker__month-select').type(month)
@@ -22,6 +25,7 @@ class RegistrationPage:
             f'.react-datepicker__day--0{day}:not(.react-datepicker__day--outside-month)'
         ).click()
 
+    @allure.step("Заполнить радиобаттон 'Gender'")
     def fill_gender(self, gender):
         if gender == "Male":
             browser.element('[for="gender-radio-1"]').click()
@@ -30,6 +34,7 @@ class RegistrationPage:
         else:
             browser.element('[for="gender-radio-3"]').click()
 
+    @allure.step("Заполнить чекбокс 'Hobbies'")
     def fill_hobbies(self, hobbies):
         if hobbies == "Sports":
             browser.element('[for="hobbies-checkbox-1"]').click()
@@ -38,6 +43,7 @@ class RegistrationPage:
         elif hobbies == "Music":
             browser.element('[for="hobbies-checkbox-3"]').click()
 
+    @allure.step("Заполнить поле 'State'")
     def fill_state(self, name):
         browser.element('#state').perform(command.js.scroll_into_view)
         browser.element('#state').click()
@@ -45,11 +51,16 @@ class RegistrationPage:
             have.exact_text(name)
         ).click()
 
+    @allure.step("Заполнить поле 'City'")
     def fill_city(self, city):
         browser.element('#city').click()
         browser.all('[id^=react-select][id*=option]').element_by(
             have.exact_text(f'{city}')
         ).click()
+
+    @allure.step("Кликнуть на кнопку 'Submit'")
+    def click_submit(self):
+        browser.element('#submit').click()
 
     def register(self, user: User):
         browser.element('#firstName').type(user.first_name)
@@ -66,6 +77,7 @@ class RegistrationPage:
         self.fill_city(user.city)
         browser.element('#submit').click()
 
+    @allure.step("Сверить ранее заполненные значения")
     def should_have_registered(self, user: User):
         browser.element('.table').all('td').even.should(
             have.exact_texts(
